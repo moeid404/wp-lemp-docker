@@ -1,2 +1,23 @@
----
-# tasks file for 1.server_provisioning
+- name: Update apt package
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Upgrade all apt packages
+  apt:
+    upgrade: dist
+
+- name: Ensure procps package is installed (provides top)
+  apt:
+    name: procps
+    state: present
+
+- name: Install vim
+  apt:
+    name: vim
+    state: present
+
+- name: Install NTP
+  apt:
+    name: ntp
+    state: present
