@@ -9,3 +9,9 @@ wp_db_name: wp
 wp_db_user: wpuser                             # It's password and root password in secrets.
 wp_db_host: localhost
 app_name: wordpress
+
+# For nginx and php configuration 
+domain_name: training.mikkawy.space
+
+# For 6.mounted-files(nginx-php)
+PHP_conf_path: /home/eid/space/roles/6.mounted-files(nginx-php)/files/www.conf
