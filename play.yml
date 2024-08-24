@@ -5,10 +5,10 @@
   gather_facts: yes
   become: yes
   roles:
-    - 1.server_provisioning
-    - 2.remote_user
+    # - 1.server_provisioning
+    # - 2.remote_user
     # - 3.ssh-conf
-    # - 4.mariadb
+    - 4.mariadb
     # - 5.wordpress
     # - 6.mounted-files(nginx-php)
     # - 7.docker-install

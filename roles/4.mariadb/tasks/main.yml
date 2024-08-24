@@ -1,2 +1,63 @@
----
-# tasks file for 4.mariadb
+- name: Install MariaDB server and dependencies
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: latest
+  with_items:
+    - mariadb-server
+    - python3-mysqldb
+
+- name: Ensure MariaDB service is running and enabled
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: Set root password for MariaDB
+  mysql_user:
+    login_user: root
+    login_password: ""
+    name: root
+    host_all: yes
+    password: "{{ mariadb_root_password }}"
+  when: mariadb_root_password != ''
+
+- name: Remove anonymous users
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: ''
+    host_all: yes
+    state: absent
+
+- name: Create WordPress database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ wp_db_name }}"
+    state: present
+
+- name: Create WordPress user
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: "{{ wp_db_user }}"
+    password: "{{ wp_db_password }}"
+    host: "%"
+    priv: "{{ wp_db_name }}.*:ALL"
+    state: present
+
+- name: Remove test database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: test
+    state: absent
+
+- name: Reload privilege tables
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_password }}"
+    name: root
+    host_all: yes
+    state: present
