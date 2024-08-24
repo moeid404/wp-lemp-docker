@@ -6,7 +6,7 @@
   become: yes
   roles:
     - 1.server_provisioning
-    # - 2.remote-user
+    - 2.remote_user
     # - 3.ssh-conf
     # - 4.mariadb
     # - 5.wordpress

@@ -1,2 +1,49 @@
----
-# tasks file for 2.remote_user
+# For me
+- name: create user
+  user:
+    name: "{{ user_name }}"
+    shell: /bin/bash
+    group: sudo
+    create_home: yes
+
+- name: create ssh directory
+  file:
+    path: /home/{{ user_name }}/.ssh
+    state: directory
+
+- name: Copy id_rsa.pub from local to remote_user directory
+  copy:
+    src: "~/.ssh/id_rsa.pub"
+    dest: "/home/{{ user_name }}/.ssh/authorized_keys"
+
+- name: Add user to /etc/sudoers
+  lineinfile:
+    path: "/etc/sudoers"
+    line: '{{ user_name }} ALL=(ALL) NOPASSWD:ALL'
+    state: present
+    insertafter: EOF
+
+# For adding teammate enable this section if you want to do so.
+# - name: create user
+#   user:
+#     name: "{{ teammate }}"
+#     shell: /bin/bash
+#     group: sudo
+#     create_home: yes
+
+# - name: create ssh directory
+#   file:
+#     path: /home/{{ teammate }}/.ssh
+#     state: directory
+
+# - name: Copy id_rsa.pub from local to remote_user directory
+#   copy:
+#     src: "/home/{{ user_name }}/space/roles/2.remote_user/files/teammate-id_rsa.pub"
+#     dest: "/home/{{ teammate }}/.ssh/authorized_keys"
+
+# - name: Add user to /etc/sudoers
+#   lineinfile:
+#     path: "/etc/sudoers"
+#     line: '{{ teammate }} ALL=(ALL) NOPASSWD:ALL'
+#     state: present
+#     insertafter: EOF

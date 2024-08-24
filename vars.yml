@@ -1,0 +1,2 @@
+user_name: "{{ lookup('pipe', 'whoami') }}" # Which will be created on the remote server
+teammate: bahy                              # Who work with you on the same server
