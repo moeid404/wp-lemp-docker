@@ -1,2 +1,22 @@
----
-# tasks file for 5.wordpress
+- name: create mounted nginx directory
+  file:
+    path: /var/www/html/
+    state: directory
+
+- name: get wordpress files
+  unarchive:
+    src: https://{{ app_name }}.org/latest.tar.gz
+    dest: "/var/www/html"
+    owner: www-data
+    group: www-data
+    mode: 0755
+    remote_src: yes  #cause i downloading a file from remote machine
+
+- name: set permissions for files
+  command: >
+    sudo find /var/www/html/{{ app_name }} -type f -exec chmod 644 {} \;
+
+- name: copy wp-config-sample.php
+  template:
+    src: "wp-config-sample.php.j2"
+    dest: "/var/www/html/wordpress/wp-config-sample.php"

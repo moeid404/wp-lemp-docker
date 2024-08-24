@@ -8,3 +8,4 @@ port: 5192                                    # Where ansible enter the remote s
 wp_db_name: wp
 wp_db_user: wpuser                             # It's password and root password in secrets.
 wp_db_host: localhost
+app_name: wordpress
