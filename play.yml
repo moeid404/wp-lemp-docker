@@ -10,8 +10,8 @@
     # - 3.ssh-conf
     # - 4.mariadb
     # - 5.wordpress
-    - 6.mounted-files(nginx-php)
-    # - 7.docker-install
+    # - 6.mounted-files(nginx-php)
+    - 7.docker-install
     # - 8.nginx-php-container
     # - 9.SSL
     # - 10.ip-tables

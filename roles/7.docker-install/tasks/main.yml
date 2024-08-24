@@ -1,2 +1,27 @@
----
-# tasks file for 7.docker-install
+# Installation
+- name: Run the Packages installation script
+  script: install_packages.sh
+
+# Run docker commands withot sudo
+- name: Ensure DOCKER_HOST is set in .bashrc
+  lineinfile:
+    path: "/home/{{user_name}}/.bashrc"
+    line: 'export DOCKER_HOST=unix:///var/run/docker.sock'
+    state: present
+    insertafter: EOF
+
+- name: Source the .bashrc to apply changes
+  shell: source ~/.bashrc
+  args:
+    executable: /bin/bash
+
+- name: Ensure the docker group exists
+  group:
+    name: docker
+    state: present
+
+- name: Add user to the docker group
+  user:
+    name: "{{ user_name }}"
+    groups: docker
+    append: yes
