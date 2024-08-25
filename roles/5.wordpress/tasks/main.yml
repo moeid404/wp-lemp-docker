@@ -16,7 +16,12 @@
   command: >
     sudo find /var/www/html/{{ app_name }} -type f -exec chmod 644 {} \;
 
-- name: copy wp-config-sample.php
+- name: Delete wp-config-sample.php
+  ansible.builtin.file:
+    path: /var/www/html/wordpress/wp-config-sample.php
+    state: absent
+
+- name: copy wp-config.php
   template:
-    src: "wp-config-sample.php.j2"
-    dest: "/var/www/html/wordpress/wp-config-sample.php"
+    src: "wp-config.php.j2"
+    dest: "/var/www/html/wordpress/wp-config.php"
