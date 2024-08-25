@@ -1,2 +1,4 @@
----
-# handlers file for 3.ssh_conf
+- name: restart sshd
+  service:
+    name: ssh
+    state: restarted
