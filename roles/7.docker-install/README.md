@@ -1,38 +1,62 @@
-Role Name
-=========
+# Ansible Playbook: Docker and Docker Compose Installation
 
-A brief description of the role goes here.
+This Ansible playbook automates the installation of Docker and Docker Compose on an Ubuntu server. It includes tasks to install necessary dependencies, add Docker's official GPG key and APT repository, install Docker CE, download Docker Compose, and configure the user environment.
 
-Requirements
-------------
+## Tasks Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+#### Update and Install Required Packages:
+- **Update apt package index:**
+  - Updates the APT package index to ensure the latest package information is retrieved.
+  
+- **Ensure curl is installed:**
+  - Installs `curl`, which is required for downloading resources.
 
-Role Variables
---------------
+- **Install required packages for Docker:**
+  - Installs the necessary packages to allow `apt` to use a repository over HTTPS.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+#### Install Docker:
+- **Add Docker GPG key:**
+  - Downloads and adds Docker's official GPG key to your system to ensure the authenticity of the Docker APT repository.
 
-Dependencies
-------------
+- **Add Docker APT repository:**
+  - Adds Docker's official APT repository to your system's sources list and updates the package cache.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- **Install Docker CE:**
+  - Installs Docker Community Edition (CE) from the official Docker repository.
 
-Example Playbook
-----------------
+#### Install Docker Compose:
+- **Download Docker Compose binary:**
+  - Downloads the Docker Compose binary from the official GitHub repository and makes it executable.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- **Verify Docker Compose installation:**
+  - Runs a command to verify that Docker Compose was installed correctly and displays the installed version.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+### Docker User Configuration
 
-License
--------
+- **Ensure DOCKER_HOST is set in `.bashrc`:**
+  - Adds an environment variable `DOCKER_HOST` to the `.bashrc` file to configure Docker to use the Unix socket.
 
-BSD
+- **Source the `.bashrc` to apply changes:**
+  - Sources the `.bashrc` file to apply the changes made, so they take effect immediately.
 
-Author Information
-------------------
+- **Ensure the docker group exists:**
+  - Checks if the `docker` group exists on the system, creating it if necessary.
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- **Add user to the docker group:**
+  - Adds the specified user to the `docker` group, allowing them to run Docker commands without needing `sudo`.
+
+## Variables
+
+- `user_name`: The username of the account that will be configured to run Docker commands without `sudo`.
+
+## Usage
+
+To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+
+1. Clone this repository to your local machine.
+2. Ensure you have SSH access to the target machines.
+3. Define the `user_name` variable in your inventory file or pass it as an extra variable when running the playbook.
+4. Run the playbook using the following command:
+
+   ```bash
+   ansible-playbook -i inventory playbook.yml --extra-vars "user_name=your_username"

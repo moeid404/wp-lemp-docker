@@ -61,3 +61,13 @@
     name: root
     host_all: yes
     state: present
+
+- name: Ensure mariadb bind-address is set to the desired IP
+  lineinfile:
+    path: /etc/mysql/mariadb.conf.d/50-server.cnf
+    regexp: '^bind-address\s*='
+    line: 'bind-address = {{ wp_db_host }}'
+    state: present
+
+- name: Restart MariaDB
+  command: sudo systemctl restart mariadb

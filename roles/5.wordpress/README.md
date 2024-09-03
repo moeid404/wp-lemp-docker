@@ -1,38 +1,37 @@
-Role Name
-=========
+# Ansible Playbook: WordPress Setup with Nginx
 
-A brief description of the role goes here.
+This Ansible playbook automates the setup of a WordPress installation on an Nginx web server. It includes tasks to create necessary directories, download and extract WordPress files, set file permissions, and configure the WordPress installation.
 
-Requirements
-------------
+## Tasks Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+1. **Create Mounted Nginx Directory:**
+   - Ensures that the `/var/www/html/` directory exists, which is the default web root directory for Nginx.
 
-Role Variables
---------------
+2. **Download and Extract WordPress Files:**
+   - Downloads the latest WordPress archive from the official WordPress website and extracts it into the `/var/www/html/` directory.
+   - The files are owned by the `www-data` user and group, with permissions set to `0755`.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+3. **Set Permissions for Files:**
+   - Sets file permissions to `644` for all files in the WordPress directory to ensure they are properly secured.
 
-Dependencies
-------------
+4. **Delete `wp-config-sample.php`:**
+   - Removes the `wp-config-sample.php` file from the WordPress directory to prevent confusion and ensure only the actual configuration file is present.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+5. **Copy `wp-config.php`:**
+   - Uses a Jinja2 template to generate a `wp-config.php` file from a template (`wp-config.php.j2`) and copies it to the WordPress directory. This file contains the necessary configuration settings for your WordPress installation.
 
-Example Playbook
-----------------
+## Variables
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- `app_name`: The name of the application, which is used to fetch the WordPress files and define the WordPress directory within the `/var/www/html/` path.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Usage
 
-License
--------
+To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
 
-BSD
+1. Clone this repository to your local machine.
+2. Ensure you have SSH access to the target machines.
+3. Define the `app_name` variable in your inventory file or pass it as an extra variable when running the playbook.
+4. Run the playbook using the following command:
 
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+   ```bash
+   ansible-playbook -i inventory playbook.yml --extra-vars "app_name=wordpress"

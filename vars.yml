@@ -1,17 +1,10 @@
 # For 1,2 and 3 roles.
-user_name: "{{ lookup('pipe', 'whoami') }}" # Which will be created on the remote server
-teammate: bahy                              # Who work with you on the same server
-port: 5192                                    # Where ansible enter the remote server from.
+user_name: "{{ lookup('pipe', 'whoami') }}"    # Which will be created on the remote server
+teammate: bahy                                 # Who work with you on the same server
+port: 5192                                     # Where ansible enter the remote server from.
 
-# For 4.mariadb role
-# Wordpress database configuration in mariaDB
+# For 4.mariadb & 5.wordpress roles
 wp_db_name: wp
 wp_db_user: wpuser                             # It's password and root password in secrets.
-wp_db_host: localhost
+wp_db_host: "164.92.238.108"                   # which will be in wp-config.php & bind-address
 app_name: wordpress
-
-# For nginx and php configuration 
-domain_name: training.mikkawy.space
-
-# For 6.mounted-files(nginx-php)
-PHP_conf_path: /home/eid/space/roles/6.mounted-files(nginx-php)/files/www.conf

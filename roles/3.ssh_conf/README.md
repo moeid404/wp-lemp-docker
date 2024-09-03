@@ -1,38 +1,38 @@
-Role Name
-=========
+# Ansible Playbook: SSH Configuration
 
-A brief description of the role goes here.
+This Ansible playbook is designed to configure the SSH server (`sshd`) on a remote machine to enhance security by changing the default settings.
 
-Requirements
-------------
+## Tasks Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+1. **Change SSH Port:**
+   - This task modifies the SSH configuration to change the default SSH port from 22 to a custom port specified by the `port` variable. Changing the SSH port helps reduce the risk of automated attacks on the default port.
 
-Role Variables
---------------
+2. **Disable Root Login:**
+   - This task configures SSH to disallow direct root login by setting `PermitRootLogin` to `no`. Disabling root login enhances security by requiring users to log in with a non-root account and then elevate privileges.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+3. **Enable Public Key Authentication:**
+   - This task ensures that SSH is configured to use public key authentication by setting `PubkeyAuthentication` to `yes`. Public key authentication is more secure than password-based authentication.
 
-Dependencies
-------------
+4. **Disable Password Authentication:**
+   - This task disables password authentication for SSH, requiring all users to use SSH key pairs instead. This further enhances security by preventing brute-force password attacks.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+## Handlers
 
-Example Playbook
-----------------
+- **Restart SSHD:**
+  - A handler is included to restart the SSH daemon (`sshd`) whenever the SSH configuration is modified. This ensures that all changes take effect immediately.
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+## Variables
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- `port`: The SSH port number to use instead of the default port 22.
 
-License
--------
+## Usage
 
-BSD
+To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
 
-Author Information
-------------------
+1. Clone this repository to your local machine.
+2. Ensure you have SSH access to the target machines.
+3. Define the `port` variable in your inventory file or pass it as an extra variable when running the playbook.
+4. Run the playbook using the following command:
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+   ```bash
+   ansible-playbook -i inventory playbook.yml --extra-vars "port=your_port"

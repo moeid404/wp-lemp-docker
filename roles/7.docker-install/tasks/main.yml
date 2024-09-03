@@ -1,6 +1,49 @@
-# Installation
-- name: Run the Packages installation script
-  script: install_packages.sh
+- name: Update apt package index
+  apt:
+    update_cache: yes
+
+- name: Ensure curl is installed
+  apt:
+    name: curl
+    state: present
+
+- name: Install required packages for Docker
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+    state: present
+
+- name: Add Docker GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add Docker APT repository
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+    state: present
+    update_cache: yes
+
+- name: Install Docker CE
+  apt:
+    name: docker-ce
+    state: present
+
+- name: Download Docker Compose binary
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-{{ ansible_system|lower }}-{{ ansible_architecture }}"
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Verify Docker Compose installation
+  command: docker-compose --version
+  register: docker_compose_version
+  changed_when: false
+
+- debug:
+    msg: "Docker Compose version installed: {{ docker_compose_version.stdout }}"
 
 # Run docker commands withot sudo
 - name: Ensure DOCKER_HOST is set in .bashrc

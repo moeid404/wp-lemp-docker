@@ -1,17 +1,14 @@
 - hosts: remote_server
   vars_files:
-    - ~/space/secret-vars-vault.yml
-    - ~/space/vars.yml
+    - ./secret-vars-vault.yml
+    - ./vars.yml
   gather_facts: yes
   become: yes
   roles:
-    # - 1.server_provisioning
-    # - 2.remote_user
-    # - 3.ssh-conf
-    # - 4.mariadb
+    - 1.server_provisioning
+    - 2.remote_user
+    - 3.ssh_conf
+    - 4.mariadb
     - 5.wordpress
-    # - 6.mounted-files(nginx-php)
-    # - 7.docker-install
-    # - 8.nginx-php-container
-    # - 9.SSL
-    # - 10.ip-tables
+    # - 6.SSL
+    - 7.docker-install

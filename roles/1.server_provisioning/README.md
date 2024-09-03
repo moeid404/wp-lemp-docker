@@ -1,38 +1,31 @@
-Role Name
-=========
+# Ansible Playbook: System Package Management
 
-A brief description of the role goes here.
+This Ansible playbook is designed to manage system packages on Ubuntu-based systems. It ensures that the system's package cache is updated, all packages are upgraded, and essential tools such as `procps`, `vim`, and `ntp` are installed.
 
-Requirements
-------------
+## Tasks Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+1. **Update apt package cache:**
+   - This task updates the apt package cache to ensure that the system has the latest information about available packages.
 
-Role Variables
---------------
+2. **Upgrade all apt packages:**
+   - This task upgrades all installed packages to their latest versions, ensuring that the system is up-to-date with the latest security patches and features.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+3. **Ensure `procps` package is installed:**
+   - This task checks and installs the `procps` package, which provides utilities like `top` to monitor system processes.
 
-Dependencies
-------------
+4. **Install Vim:**
+   - This task installs the `vim` text editor, a powerful tool for editing files directly from the command line.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+5. **Install NTP:**
+   - This task installs the Network Time Protocol (NTP) daemon, which is essential for synchronizing the system clock with remote servers.
 
-Example Playbook
-----------------
+## Usage
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+1. Clone this repository to your local machine.
+2. Ensure you have SSH access to the target machines.
+3. Run the playbook using the following command:
 
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+   ```bash
+   ansible-playbook -i inventory playbook.yml

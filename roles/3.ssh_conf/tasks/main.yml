@@ -4,11 +4,11 @@
     regexp: "^#?Port 22"
     line: "Port {{ port }} "
 
-# - name: change PermitRootLogin
-#   lineinfile:
-#     path: /etc/ssh/sshd_config
-#     regexp: "^#?PermitRootLogin"
-#     line: "PermitRootLogin no"
+- name: change PermitRootLogin
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin no"
 
 - name: change PubKeyAuthentication
   lineinfile:
@@ -16,9 +16,9 @@
     regexp: "^#?PubkeyAuthentication"
     line: "PubKeyAuthentication yes"
 
-# - name: change PasswordAuthentication
-#   lineinfile:
-#     path: /etc/ssh/sshd_config
-#     regexp: "^#?PasswordAuthentication"
-#     line: "PasswordAuthentication no"
-#   notify: restart sshd
+- name: change PasswordAuthentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: restart sshd

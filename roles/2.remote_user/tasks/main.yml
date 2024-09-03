@@ -36,10 +36,10 @@
 #     path: /home/{{ teammate }}/.ssh
 #     state: directory
 
-# - name: Copy id_rsa.pub from local to remote_user directory
+# - name: copy teammate id_rsa.pub key to remote server authorized_keys
 #   copy:
-#     src: "/home/{{ user_name }}/space/roles/2.remote_user/files/teammate-id_rsa.pub"
-#     dest: "/home/{{ teammate }}/.ssh/authorized_keys"
+#     src: teammate-id_rsa.pub
+#     dest: /home/{{ teammate }}/.ssh/authorized_keys
 
 # - name: Add user to /etc/sudoers
 #   lineinfile:
