@@ -1,0 +1,13 @@
+---
+# tasks file for 6.SSL
+
+- name: Install Certbot and dependencies
+  apt:
+    name: certbot
+    state: present
+
+- name: Obtain SSL certificates using Certbot
+  shell: certbot certonly --standalone -d {{ domain_name }} --non-interactive --agree-tos --email {{ ssl_email }}
+  args:
+    creates: "/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem"
+

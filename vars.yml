@@ -8,3 +8,30 @@ wp_db_name: wp
 wp_db_user: wpuser                             # It's password and root password in secrets.
 wp_db_host: "164.92.238.108"                   # which will be in wp-config.php & bind-address
 app_name: wordpress
+
+
+# For 6.ssl_certificates role 
+
+domain_name: training.mikkawy.space
+ssl_email: biboacc01@gmail.com
+
+# For 8.templating the configurations 
+
+ssl_cert_path: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+ssl_key_path: /etc/letsencrypt/live/{{ domain_name }}/privkey.pem
+wordpress_root: /var/www/html/wordpress
+nginx_conf_path: /etc/nginx/conf.d/wordpress.conf
+php_fpm_conf_path: /usr/local/etc/php-fpm.d/www.conf
+
+# For 9.launching containers and docker-compose file 
+
+nginx_image: nginx
+php_fpm_image: php_fpm_custom_image  # Change if using a different custom image
+nginx_container_name: nginx_container
+php_fpm_container_name: php_fpm_container
+
+wordpress_path: /var/www/html/wordpress
+
+docker_compose_path: /srv/docker-compose.yml
+dockerfile_path: /srv/Dockerfile
+app_network: app-network

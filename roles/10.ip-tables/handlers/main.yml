@@ -1,0 +1,13 @@
+---
+# handlers file for 10.ip-tables
+
+- name: Restart networking
+  ansible.builtin.systemd:
+    name: NetworkManager  # Or systemd-networkd, networking, or network-manager
+    state: restarted
+  when: ansible_service_mgr == "systemd"
+
+- name: Restart network interface
+  ansible.builtin.command: ip link set eth0 down && ip link set eth0 up
+  when: ansible_service_mgr != "systemd"
+

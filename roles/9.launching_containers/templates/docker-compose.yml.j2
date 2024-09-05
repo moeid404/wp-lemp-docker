@@ -1,0 +1,33 @@
+version: '3'
+services:
+  nginx:
+    image: {{ nginx_image }}
+    container_name: {{ nginx_container_name }}
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - /etc/letsencrypt/live:/etc/letsencrypt/live
+      - /etc/letsencrypt/archive:/etc/letsencrypt/archive
+      - "{{ nginx_conf_path }}:/etc/nginx/conf.d/wordpress.conf"
+      - "{{ wordpress_path }}:/var/www/html/wordpress"
+    depends_on:
+      - php-fpm
+    networks:
+      - app-network
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: {{ php_fpm_container_name }}
+    volumes:
+      - "{{ wordpress_path }}:/var/www/html/wordpress"
+      - "{{ php_fpm_conf_path }}:/usr/local/etc/php-fpm.d/www.conf"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
