@@ -1,3 +1,10 @@
+## Those permissions needed for these files to prevent ssh issues
+  # chmod 600 /home/{{ user_name }}/.ssh/known_hosts
+  # chown eid:eid /home/{{ user_name }}/.ssh/known_hosts
+  # chmod 700 /home/{{ user_name }}/.ssh
+  # chown eid:eid /home/{{ user_name }}/.ssh
+  # ssh-keygen -f "/home/{{ user_name }}/.ssh/known_hosts" -R "164.92.238.108"
+
 - name: Update apt package
   apt:
     update_cache: yes

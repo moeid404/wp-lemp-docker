@@ -45,11 +45,15 @@ iptables -A OUTPUT -p tcp --sport 9000 -m conntrack --ctstate ESTABLISHED -j ACC
 iptables -A INPUT -p tcp --dport 3306 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 3306 -m conntrack --ctstate ESTABLISHED -j ACCEPT
 
+#Apply Docker Chains & Launching containers
+sudo systemctl restart docker
+sudo docker-compose -f /srv/docker-compose.yml up -d
+
 # Set default policies
 iptables -P INPUT DROP
 iptables -P FORWARD DROP
 iptables -P OUTPUT DROP
 
-# Save the rules so they persist after reboot
-/sbin/iptables-save > /etc/iptables/rules.v4
+#Saving rules:
+netfilter-persistent save
 

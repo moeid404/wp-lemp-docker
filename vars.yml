@@ -34,4 +34,4 @@ wordpress_path: /var/www/html/wordpress
 
 docker_compose_path: /srv/docker-compose.yml
 dockerfile_path: /srv/Dockerfile
-app_network: app-network
+app_network: app

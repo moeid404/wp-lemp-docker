@@ -21,4 +21,9 @@
     path: /etc/ssh/sshd_config
     regexp: "^#?PasswordAuthentication"
     line: "PasswordAuthentication no"
-  notify: restart sshd
+
+- name: Restart SSHD to apply changes in sshd_config
+  ansible.builtin.systemd:
+    name: sshd
+    state: restarted
+  become: yes

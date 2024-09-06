@@ -13,6 +13,5 @@
     - 6.ssl_certificates
     - 7.docker-install
     - 8.mounting_configs
-    - 9.launching_containers
-    - 10.ip-tables
-
+    - 9.deploy-docker-files
+    - 10.ip-tables-launching

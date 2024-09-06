@@ -11,6 +11,6 @@
     src: Dockerfile
     dest: "{{ dockerfile_path }}"
 
-- name: Start services using Docker Compose
-  command: docker-compose -f "{{ docker_compose_path }}" up -d
+# - name: Start services using Docker Compose
+#   command: docker-compose -f "{{ docker_compose_path }}" up -d
 

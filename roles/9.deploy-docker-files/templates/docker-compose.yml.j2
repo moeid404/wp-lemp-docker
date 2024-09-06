@@ -14,7 +14,7 @@ services:
     depends_on:
       - php-fpm
     networks:
-      - app-network
+      - app
 
   php-fpm:
     build:
@@ -25,9 +25,9 @@ services:
       - "{{ wordpress_path }}:/var/www/html/wordpress"
       - "{{ php_fpm_conf_path }}:/usr/local/etc/php-fpm.d/www.conf"
     networks:
-      - app-network
+      - app
 
 networks:
-  app-network:
+  app:
     driver: bridge
 

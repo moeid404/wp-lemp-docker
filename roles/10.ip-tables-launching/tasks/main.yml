@@ -1,0 +1,8 @@
+- name: Install iptables-persistent package
+  ansible.builtin.apt:
+    name: iptables-persistent
+    state: present
+    update_cache: yes
+
+- name: Apply iptables rules & launching containers
+  script: configure_firewall.sh
