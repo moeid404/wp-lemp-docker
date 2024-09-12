@@ -1,0 +1,31 @@
+- name: Create multiple directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - /etc/nginx/conf.d                       # For nginx config file
+    - /srv/docker                             # Docker work directory
+    - /usr/local/etc/php-fpm.d                # For php-fom config file
+
+- name: copy nginx.conf.j2
+  template:
+    src: "nginx.conf.j2"
+    dest: "/etc/nginx/conf.d/nginx.conf"
+
+- name: Copy www.conf to remote host
+  copy:
+    src: www.conf
+    dest: /usr/local/etc/php-fpm.d/www.conf
+
+- name: copy docker-compose.yml
+  template:
+    src: "docker-compose.yml.j2"
+    dest: "{{docker_compose_path}}"
+
+- name: copy Dockerfile
+  copy:
+    src: Dockerfile
+    dest: "{{dockerfile_path}}"
+
+- name: Start containers using Docker Compose
+  command: docker-compose -f /srv/docker/docker-compose.yml up -d

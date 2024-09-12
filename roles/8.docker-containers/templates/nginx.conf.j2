@@ -14,6 +14,9 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers on;
 
+    error_log  /var/log/nginx/{{domain_name}}_error.log;
+    access_log /var/log/nginx/{{domain_name}}_access.log;
+
     root {{ wordpress_root }};  # Assume that WordPress is in a subdirectory under html
     index index.php index.html index.htm;
 

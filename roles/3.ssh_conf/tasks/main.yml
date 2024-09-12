@@ -24,6 +24,6 @@
 
 - name: Restart SSHD to apply changes in sshd_config
   ansible.builtin.systemd:
-    name: sshd
+    name: ssh
     state: restarted
   become: yes

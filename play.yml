@@ -5,13 +5,12 @@
   gather_facts: yes
   become: yes
   roles:
-    - 1.server_provisioning
-    - 2.remote_user
-    - 3.ssh_conf
-    - 4.mariadb
-    - 5.wordpress
-    - 6.ssl_certificates
-    - 7.docker-install
-    - 8.mounting_configs
-    - 9.deploy-docker-files
-    - 10.ip-tables-launching
+    # - 1.server_provisioning
+    # - 2.remote_user
+    # - 3.ssh_conf
+    # - 4.mariadb
+    # - 5.wordpress
+    # - 6.SSL
+    # - 7.docker-install
+    - 8.docker-containers
+    - 9.iptables

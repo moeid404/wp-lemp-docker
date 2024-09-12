@@ -1,6 +1,3 @@
----
-# tasks file for 6.SSL
-
 - name: Install Certbot and dependencies
   apt:
     name: certbot

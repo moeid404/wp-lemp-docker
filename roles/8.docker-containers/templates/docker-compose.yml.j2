@@ -9,7 +9,7 @@ services:
     volumes:
       - /etc/letsencrypt/live:/etc/letsencrypt/live
       - /etc/letsencrypt/archive:/etc/letsencrypt/archive
-      - "{{ nginx_conf_path }}:/etc/nginx/conf.d/wordpress.conf"
+      - "{{ nginx_conf_path }}:/etc/nginx/conf.d/nginx.conf"
       - "{{ wordpress_path }}:/var/www/html/wordpress"
     depends_on:
       - php-fpm
