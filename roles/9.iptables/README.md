@@ -1,46 +1,65 @@
-# Configuring IPTables Firewall Role
+# Applying iptables Rules Role
 
-This role is responsible for setting up iptables firewall rules on the server to secure the environment by allowing only the necessary traffic and blocking everything else. It ensures that the Nginx and PHP-FPM containers can communicate with each other, and that the MariaDB database can accept and respond to connections 
+This role is responsible for setting up iptables firewall rules on the server to secure the environment by allowing only the necessary traffic and blocking everything else. It ensures that the Nginx and PHP-FPM containers can communicate with each other, and that the MariaDB database can accept and respond to connections
 
-## Tasks Overview
+## Overview
 
 The role performs the following tasks:
 
-1. **Copy the iptables Configuration Script to the Server**  
-   Copies a shell script that configures the iptables rules to the `/usr/local/bin/` directory on the remote server.
+1. **Install `iptables-persistent` Package**  
+   Installs the `iptables-persistent` package to ensure that iptables rules persist across system reboots.
 
-2. **Execute the iptables Configuration Script**  
-   Runs the script to apply the iptables rules, ensuring that only necessary traffic is allowed.
+2. **Apply iptables Rules**  
+   Executes a custom script (`firewall-rules.sh`) that defines and applies the necessary iptables rules to the server.
 
-3. **Restart Docker Service to Apply iptables Changes**  
-   Restarts the Docker service to ensure that the iptables changes take effect and that Docker can properly manage network traffic.
+## iptables Rules Script
 
-4. **Restart Nginx and PHP-FPM Containers Using Docker Compose**  
-   Restarts the Nginx and PHP-FPM containers to ensure they are running with the updated firewall settings.
+The `firewall-rules.sh` script includes the following actions:
 
-## Script Details
+1. **Flush, Delete Chains, and Zero All Packets**  
+   Flushes (`-F`), deletes chains (`-X`), and zeros packet counters (`-Z`) to reset all existing iptables rules.
 
-The iptables script (`configure_firewall.sh`) contains the following rules:
+2. **DNS Resolving**  
+   Allows DNS traffic (port 53) for both input and output.
 
-- **Flush Existing Rules**: Clears all current iptables rules to start with a clean slate.
-- **Allow Loopback Traffic**: Permits traffic on the loopback interface (`lo`), which is necessary for internal server communication.
-- **DNS Traffic**: Allows outgoing DNS queries and their responses.
-- **Docker Traffic**: Permits all necessary traffic for Docker-related interfaces.
-- **HTTP and HTTPS Traffic**: Allows incoming and outgoing web traffic on ports 80 (HTTP) and 443 (HTTPS).
-- **SSH Access**: Allows SSH connections on port 22 to enable remote administration.
-- **Nginx and PHP-FPM Communication**: Permits traffic between Nginx and PHP-FPM on port 9000.
-- **MariaDB Communication**: Allows MariaDB (MySQL) traffic on port 3306 for database interactions and to allow incoming connections on this port from the Nginx and PHP-FPM containers to the host. .
-- **Default Policies**: Sets the default policies to drop all incoming, outgoing, and forwarding traffic that isn’t explicitly allowed.
-- **Persist Rules**: Saves the iptables rules so they persist after a reboot.
+3. **Internal Connections**  
+   - **Loopback Interface**: Permits all traffic on the loopback interface.  
+   - **MariaDB**: Allows traffic to and from the MariaDB database on port 3306.  
+   - **Docker to Host**: Enables communication between Docker containers and the host.  
+   - **Nginx and PHP-FPM Containers**: Allows traffic between Nginx and PHP-FPM containers on port 9000.
+
+4. **Incoming Connections**  
+   - **HTTP**: Allows incoming HTTP traffic on port 80.  
+   - **HTTPS**: Allows incoming HTTPS traffic on port 443.  
+   - **SSH**: Permits SSH connections on port 22.
+
+5. **Outgoing Connections**  
+   - **HTTP**: Allows outgoing HTTP traffic on port 80.  
+   - **HTTPS**: Allows outgoing HTTPS traffic on port 443.
+
+6. **Apply Docker Chains**  
+   Restarts Docker and brings up the services defined in the Docker Compose file.
+
+7. **Set Default Policies**  
+   Sets the default policy to `DROP` for all chains (INPUT, OUTPUT, FORWARD).
+
+8. **Save Rules**  
+   Saves the iptables rules using `netfilter-persistent`.
 
 ## Usage
 
-Include this role in your playbook to automatically apply the firewall configuration to your server:
+Include this role in your playbook and ensure that the `firewall-rules.sh` script is available within the role’s files directory:
+
 
 **Example Playbook:**
 
 ```yaml
 - hosts: all
   roles:
-    - Configure_Firewall
+    - Apply_iptables_Rules
+```
 
+
+## Author Information
+
+This role was created in 2024 by **Bahy Ahmed**.

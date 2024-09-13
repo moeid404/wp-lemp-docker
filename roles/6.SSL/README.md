@@ -12,7 +12,7 @@ This Ansible role automates the process of obtaining SSL certificates for a spec
 
 ## Variables
 
-The following variables are used in this role and should be defined in your inventory file orvars file:
+The following variables are used in this role and should be defined in your inventory file or vars file or in the main playbook like the upcoming example :
 
 - `domain_name`: Domain for the SSL certificate  (e.g., `domain.example.com`).
 - `ssl_email`: Email for Let's Encrypt notifications (e.g., `youremail@example.com`).
@@ -28,4 +28,9 @@ Include this role in your main playbook:
   vars:
     domain_name: "yourdomain.com"
     ssl_email: "youremail@example.com"
+```
+
+## Author Information
+
+This role was created in 2024 by **Bahy Ahmed**.
 

@@ -1,6 +1,6 @@
-# Ansible Playbook: System Package Management
+# System Package Management Role 
 
-This Ansible playbook is designed to manage system packages on Ubuntu-based systems. It ensures that the system's package cache is updated, all packages are upgraded, and essential tools such as `procps`, `vim`, and `ntp` are installed.
+This Role is designed to manage system packages on Ubuntu-based systems. It ensures that the system's package cache is updated, all packages are upgraded, and essential tools such as `procps`, `vim`, and `ntp` are installed.
 
 ## Tasks Overview
 
@@ -21,11 +21,18 @@ This Ansible playbook is designed to manage system packages on Ubuntu-based syst
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+Include this role in your playbook to ensure that the server is provisioned and ready for further configuration:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Run the playbook using the following command:
+**Example Playbook:**
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml
+```yaml
+- hosts: all
+  roles:
+    - server_provisioning
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+

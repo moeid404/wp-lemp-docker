@@ -1,6 +1,6 @@
-# Ansible Playbook: SSH Configuration
+# SSH Configuration Role
 
-This Ansible playbook is designed to configure the SSH server (`sshd`) on a remote machine to enhance security by changing the default settings.
+This role is designed to configure the SSH server (`sshd`) on a remote machine to enhance security by changing the default settings.
 
 ## Tasks Overview
 
@@ -16,23 +16,28 @@ This Ansible playbook is designed to configure the SSH server (`sshd`) on a remo
 4. **Disable Password Authentication:**
    - This task disables password authentication for SSH, requiring all users to use SSH key pairs instead. This further enhances security by preventing brute-force password attacks.
 
-## Handlers
+5. **Restart SSHD** 
+   - Restarts the SSH service to apply the changes made to the `sshd_config` file.
 
-- **Restart SSHD:**
-  - A handler is included to restart the SSH daemon (`sshd`) whenever the SSH configuration is modified. This ensures that all changes take effect immediately.
 
 ## Variables
 
-- `port`: The SSH port number to use instead of the default port 22.
+- `port`: The port used by Ansible to connect to the remote server. Default is `22`. This variable allows you to specify a different port if you have customized SSH settings on your server.
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+Include this role in your playbook to configure the SSH server:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Define the `port` variable in your inventory file or pass it as an extra variable when running the playbook.
-4. Run the playbook using the following command:
+**Example Playbook:**
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml --extra-vars "port=your_port"
+```yaml
+- hosts: all
+  roles:
+    - ssh_configuration
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+

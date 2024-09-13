@@ -1,6 +1,6 @@
-# Ansible Playbook: User Creation and SSH Setup
+# User Management and SSH Setup Role 
 
-This Ansible playbook is designed to automate the process of creating a user, setting up SSH access, and configuring sudo privileges on a remote server. Additionally, you can enable the option to create and configure a teammate user.
+This role is designed to automate the process of creating a user for whoever tries to run the playbook, setting up SSH access, and configuring sudo privileges on a remote server. Additionally, you can enable the option to create and configure a teammate user.
 
 ## Tasks Overview
 
@@ -35,18 +35,24 @@ If you want to add a teammate to the server, you can enable the following tasks:
    - Grants your teammate passwordless sudo privileges by adding them to the `/etc/sudoers` file.
 
 ## Variables
-- `user_name`: The name of the user to be created.
-- `teammate`: The name of the teammate user to be created (optional).
+- **`user_name`**: The username to be created on the remote server. Default is `{{ lookup('pipe', 'whoami') }}`.
+- **`teammate`**: The username of a teammate to be added (optional). Default is `bahy`.
+
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+Include this role in your playbook to set up user accounts and configure SSH access:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Define the variables `user_name` and `teammate` (if applicable) in your inventory file or pass them as extra variables when running the playbook.
-4. Run the playbook using the following command:
+**Example Playbook:**
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml --extra-vars "user_name=your_username"
-   ansible-playbook -i inventory playbook.yml --extra-vars "teammate=your_teammate"
+```yaml
+- hosts: all
+  roles:
+    - user_management
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+

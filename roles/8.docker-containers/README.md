@@ -1,55 +1,113 @@
-# Templating Configuration Files Role
+# Template Configuration and Launch Containers Role
 
-This role is responsible for templating and deploying the configuration files for Nginx and PHP-FPM to a remote server. It ensures that the necessary directories exist and then uses Jinja2 templates to create the configuration files.
+This role is responsible for setting up and launching Nginx and PHP-FPM containers using Docker Compose. It handles creating necessary directories, templating configuration files, and starting the containers.
 
 ## Overview
 
 The role performs the following tasks:
 
-1. **Ensure Nginx `conf.d` Directory Exists**  
-   Ensures that the directory `/etc/nginx/conf.d/` exists on the remote server with the correct permissions.
+1. **Create Required Directories**  
+   Ensures that the necessary directories for Nginx, PHP-FPM, and Docker Compose are created on the remote server.
 
-2. **Ensure PHP-FPM Configuration Directory Exists**  
-   Ensures that the directory `/usr/local/etc/php-fpm.d/` exists on the remote server with the correct permissions.
+2. **Template and Deploy Nginx Configuration**  
+   Uses a Jinja2 template to generate the Nginx configuration file and deploy it to the specified path on the remote server.
 
-3. **Create Nginx Configuration from Template**  
-   Uses a Jinja2 template to generate the Nginx configuration file and deploys it to the specified path on the remote server.
+3. **Deploy PHP-FPM Configuration**  
+   Copies the PHP-FPM configuration file (`www.conf`) to the specified path on the remote server.
 
-4. **Create PHP-FPM Configuration from Template**  
-   Uses a Jinja2 template to generate the PHP-FPM configuration file and deploys it to the specified path on the remote server.
+4. **Template and Deploy Docker Compose File**  
+   Uses a Jinja2 template to generate the Docker Compose file and deploy it to the specified path on the remote server.
+
+5. **Deploy Dockerfile**  
+   Copies the Dockerfile to the specified path on the remote server.
+
+6. **Start Services Using Docker Compose**  
+   Runs `docker-compose up -d` to start the Nginx and PHP-FPM services in detached mode.
 
 ## Variables
 
-The following variables are used in this role and should be defined in your Ansible playbook or inventory , vars file:
+The following variables are used in this role and should be defined in your Ansible playbook or vars files:
 
-- **`nginx_conf_path`**: The path where the Nginx configuration file will be deployed.
-- **`php_fpm_conf_path`**: The path where the PHP-FPM configuration file will be deployed.
-- **`ssl_cert_path`**: The path to the SSL certificate file, typically stored in `/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem`.
-- **`ssl_key_path`**: The path to the SSL certificate's private key, typically stored in `/etc/letsencrypt/live/{{ domain_name }}/privkey.pem`.
-- **`wordpress_root`**: The root directory of the WordPress installation, typically `/var/www/html/wordpress`.
+### Role-Specific Variables
 
-## Template Variables
+- **`docker_compose_path`**: The path where the Docker Compose file will be deployed.  
+  Example: `/srv/docker/docker-compose.yml`.
 
-The Nginx template (`nginx.conf.j2`) and PHP-FPM template (`php-fpm.conf.j2`) use the following variables:
+- **`dockerfile_path`**: The path where the Dockerfile will be deployed.  
+  Example: `/srv/docker/Dockerfile`.
 
-- **`ssl_cert_path`**: The full path to the SSL certificate file.
-- **`ssl_key_path`**: The full path to the SSL private key file.
-- **`wordpress_root`**: The root directory for WordPress files.
+### Docker Compose Template Variables
 
-These variables allow you to customize the generated configuration files based on your environment.
+The Docker Compose template (`docker-compose.yml.j2`) uses the following variables to configure the services:
+
+- **`nginx_image`**: The Docker image to use for the Nginx container.  
+  Default: `nginx`.
+
+- **`nginx_container_name`**: The name of the Nginx container.  
+  Default: `nginx_container`.
+
+- **`nginx_conf_path`**: The path to the Nginx configuration file inside the container.  
+  Example: `/etc/nginx/conf.d/nginx.conf`.
+
+- **`wordpress_path`**: The path to the WordPress installation directory.  
+  Default: `/var/www/html/wordpress`.
+
+- **`php_fpm_image`**: The Docker image to use for the PHP-FPM container.  
+  Default: `php_fpm_custom_image`.
+
+- **`php_fpm_container_name`**: The name of the PHP-FPM container.  
+  Default: `php_fpm_container`.
+
+- **`php_fpm_conf_path`**: The path to the PHP-FPM configuration file inside the container.  
+  Example: `/usr/local/etc/php-fpm.d/www.conf`.
+
+- **`app_network`**: The Docker network to which the containers will be connected.  
+  Default: `app`.
+
+### Nginx Template Variables
+
+The Nginx configuration template (`nginx.conf.j2`) uses the following variables:
+
+- **`ssl_cert_path`**: The path to the SSL certificate file used by Nginx.  
+  Example: `/etc/letsencrypt/live/{{ domain_name }}/fullchain.pem`.
+
+- **`ssl_key_path`**: The path to the SSL certificate key file used by Nginx.  
+  Example: `/etc/letsencrypt/live/{{ domain_name }}/privkey.pem`.
+
+- **`wordpress_root`**: The root directory of the WordPress installation on the server.  
+  Example: `/var/www/html/wordpress`.
+
+- **`domain_name`**: The domain name for the Nginx server configuration.  
+  Example: `training.mikkawy.space`.
 
 ## Usage
 
-Include this role in your playbook as follows:
+Include this role in your playbook and ensure that the required variables are defined in a `vars` file or inventory file or in the main playbook like the upcoming example.
+
+**Example Playbook:**
 
 ```yaml
-- hosts: all
-  roles:
-    - Templating_Config_Files
+- hosts: webservers
   vars:
-    nginx_conf_path: "/etc/nginx/conf.d/wordpress.conf"
-    php_fpm_conf_path: "/usr/local/etc/php-fpm.d/www.conf"
-    ssl_cert_path: "/etc/letsencrypt/live/yourdomain.com/fullchain.pem"
-    ssl_key_path: "/etc/letsencrypt/live/yourdomain.com/privkey.pem"
-    wordpress_root: "/var/www/html/wordpress"
+    domain_name: training.mikkawy.space
+    docker_compose_path: /srv/docker/docker-compose.yml
+    dockerfile_path: /srv/docker/Dockerfile
+    nginx_image: nginx
+    nginx_container_name: nginx_container
+    nginx_conf_path: /etc/nginx/conf.d/nginx.conf
+    wordpress_path: /var/www/html/wordpress
+    php_fpm_image: php_fpm_custom_image
+    php_fpm_container_name: php_fpm_container
+    php_fpm_conf_path: /usr/local/etc/php-fpm.d/www.conf
+    app_network: app
+    ssl_cert_path: /etc/letsencrypt/live/{{ domain_name }}/fullchain.pem
+    ssl_key_path: /etc/letsencrypt/live/{{ domain_name }}/privkey.pem
+    wordpress_root: /var/www/html/wordpress
+  roles:
+    - template_and_launch_containers
+```
+
+## Author Information
+
+This role was created in 2024 by **Bahy Ahmed**.
 

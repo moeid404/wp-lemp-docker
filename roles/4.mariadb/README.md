@@ -1,56 +1,55 @@
-# Ansible Playbook: MariaDB Installation and Configuration
+# MariaDB Installation and Configuration Role
 
-This Ansible playbook automates the installation and configuration of MariaDB on a remote server. It includes tasks to set up the MariaDB server, secure the installation, and create a database and user for a WordPress installation.
+This Role automates the installation and configuration of MariaDB on a remote server. It includes tasks to set up the MariaDB server, secure the installation, and create a database and user for a WordPress installation.
 
 ## Tasks Overview
 
-1. **Install MariaDB Server and Dependencies:**
-   - Installs the MariaDB server along with the required Python dependencies (`mariadb-server` and `python3-mysqldb`).
-   - Updates the package cache to ensure the latest versions of the packages are installed.
+The role performs the following tasks:
 
-2. **Ensure MariaDB Service is Running and Enabled:**
-   - Starts the MariaDB service and ensures it is enabled to start on boot.
+1. **Install MariaDB Server and Dependencies**  
+   Installs the MariaDB server and the necessary Python module for MySQL database management using `apt`. This ensures that the MariaDB server and its dependencies are up-to-date.
 
-3. **Set Root Password for MariaDB:**
-   - Configures the root password for the MariaDB server if a password is provided.
+2. **Ensure MariaDB Service is Running and Enabled**  
+   Starts the MariaDB service and enables it to start on boot. This ensures that the database server is always running and ready for connections.
 
-4. **Remove Anonymous Users:**
-   - Removes anonymous users from the MariaDB server to enhance security.
+3. **Create WordPress Database**  
+   Creates a new database for WordPress using the `mysql_db` module. This database is required for WordPress to store its data.
 
-5. **Create WordPress Database:**
-   - Creates a database for WordPress using the specified database name.
+4. **Create WordPress User**  
+   Creates a new MySQL user with privileges to access the WordPress database. The user is granted all privileges on the database to allow WordPress to manage its content.
 
-6. **Create WordPress User:**
-   - Creates a database user with all privileges on the WordPress database and assigns the specified password.
+5. **Ensure MariaDB Bind-Address is Set to the Desired IP**  
+   Configures the `bind-address` setting in the MariaDB configuration file to ensure that the server listens on the specified IP address. This is important for remote connections to the database.
 
-7. **Remove Test Database:**
-   - Deletes the default `test` database to further secure the MariaDB installation.
-
-8. **Reload Privilege Tables:**
-   - Reloads the MariaDB privilege tables to ensure that all changes take effect.
-
-9. **Ensure MariaDB Bind-Address is Set:**
-   - Configures the MariaDB server to listen on a specific IP address by modifying the `bind-address` setting.
-
-10. **Restart MariaDB:**
-    - Restarts the MariaDB service to apply configuration changes.
+6. **Restart MariaDB**  
+   Restarts the MariaDB service to apply the changes made to the configuration file. This ensures that the new settings take effect.
 
 ## Variables
 
-- `mariadb_root_password`: The root password for the MariaDB server.
-- `wp_db_name`: The name of the WordPress database to be created.
-- `wp_db_user`: The username for the WordPress database user.
-- `wp_db_password`: The password for the WordPress database user.
-- `wp_db_host`: The IP address that MariaDB will bind to.
+- **`wp_db_name`**: The name of the WordPress database to be created. Default is `wp`.
+
+- **`wp_db_user`**: The username for the WordPress database user. Default is `wpuser`.
+
+- **`wp_db_password`**: The password for the WordPress database user. This should be securely managed and provided as a secret.
+
+- **`mariadb_root_password`**: The password for the MariaDB root user. This should be securely managed and provided as a secret.
+
+- **`wp_db_host`**: The IP address on which MariaDB will listen. This is used in the `bind-address` configuration. Example IP: `164.92.238.108`.
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+Include this role in your playbook to configure the MariaDB server for WordPress:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Define the necessary variables (`mariadb_root_password`, `wp_db_name`, `wp_db_user`, `wp_db_password`, `wp_db_host`) in your inventory file or pass them as extra variables when running the playbook.
-4. Run the playbook using the following command:
+**Example Playbook:**
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml --extra-vars "mariadb_root_password=your_root_password wp_db_name=your_wp_db_name wp_db_user=your_wp_db_user wp_db_password=your_wp_db_password wp_db_host=your_wp_db_host"
+```yaml
+- hosts: all
+  roles:
+    - mariadb
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+

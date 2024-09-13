@@ -1,6 +1,6 @@
-# Ansible Playbook: WordPress Setup with Nginx
+# WordPress Setup Role 
 
-This Ansible playbook automates the setup of a WordPress installation on an Nginx web server. It includes tasks to create necessary directories, download and extract WordPress files, set file permissions, and configure the WordPress installation.
+This Role automates the setup of a WordPress installation on an Nginx web server. It includes tasks to create necessary directories, download and extract WordPress files, set file permissions, and configure the WordPress installation.
 
 ## Tasks Overview
 
@@ -26,12 +26,18 @@ This Ansible playbook automates the setup of a WordPress installation on an Ngin
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
+Include this role in your playbook to set up WordPress:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Define the `app_name` variable in your inventory file or pass it as an extra variable when running the playbook.
-4. Run the playbook using the following command:
+**Example Playbook:**
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml --extra-vars "app_name=wordpress"
+```yaml
+- hosts: all
+  roles:
+    - wordpress_setup
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+
