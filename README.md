@@ -125,7 +125,7 @@ This project is maintained by the following authors:
   Email: biboacc0101@gmail.com
 
 - **Mohamed Eid** - [GitHub Profile](https://github.com/moeid404)  
-  Email: eng.meid404@gmail.com
+  Email: moeid404@gmail.com
 
 Feel free to reach out to us for any questions, issues, or contributions.
 
