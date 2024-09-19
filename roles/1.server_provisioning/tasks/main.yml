@@ -3,7 +3,7 @@
   # chown eid:eid /home/{{ user_name }}/.ssh/known_hosts
   # chmod 700 /home/{{ user_name }}/.ssh
   # chown eid:eid /home/{{ user_name }}/.ssh
-  # ssh-keygen -f "/home/{{ user_name }}/.ssh/known_hosts" -R "164.92.238.108"
+  # ssh-keygen -f "/home/{{ user_name }}/.ssh/known_hosts" -R "{{server-ipv4}}"
 
 - name: Update apt package
   apt:

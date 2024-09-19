@@ -51,12 +51,19 @@ This Ansible playbook automates the installation of Docker and Docker Compose on
 
 ## Usage
 
-To execute this playbook, you need to have Ansible installed on your control node. Follow the steps below to run the playbook:
 
-1. Clone this repository to your local machine.
-2. Ensure you have SSH access to the target machines.
-3. Define the `user_name` variable in your inventory file or pass it as an extra variable when running the playbook.
-4. Run the playbook using the following command:
+Include this role in your playbook to ensure that Docker and Docker-compose are installed
 
-   ```bash
-   ansible-playbook -i inventory playbook.yml --extra-vars "user_name=your_username"
+**Example Playbook:**
+
+```yaml
+- hosts: all
+  roles:
+    - Docker_installation
+```
+
+
+## Author Information
+
+This role was created in 2024 by **Mohamed Eid**.
+

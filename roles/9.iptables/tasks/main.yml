@@ -4,5 +4,5 @@
     state: present
     update_cache: yes
 
-- name: Apply iptables rules & launching containers
-  script: configure_firewall.sh
+- name: Apply iptables rules
+  script: firewall-rules.sh
