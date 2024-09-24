@@ -1,6 +1,5 @@
 # Full LEMP Stack WordPress Deployment with Containers and SSL
-
-
+![Project Logo](project-diagram.png)
 ## Overview
 
 
